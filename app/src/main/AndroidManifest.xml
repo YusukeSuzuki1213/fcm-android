@@ -30,6 +30,12 @@
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
+
+        <!--        notification icon-->
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@android:drawable/sym_action_email" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
     </application>
 
 </manifest>

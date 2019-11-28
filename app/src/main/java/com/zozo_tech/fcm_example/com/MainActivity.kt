@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // InstanceIDを取得
-        logTokenButton.setOnClickListener {
+        getInstanceButton.setOnClickListener {
             // Get token
             // [START retrieve_current_token]
             FirebaseInstanceId.getInstance().instanceId
@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity() {
                     val msg = getString(R.string.msg_token_fmt, token)
                     Log.d(TAG, msg)
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+
+                    //InstanceIdView.text = msg
+
                 })
             // [END retrieve_current_token]
         }
