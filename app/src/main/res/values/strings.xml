@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">fcm-example</string>
-    <string name="msg_token_fmt">InstanceID Token: %s</string>
+    <string name="msg_token_fmt">[InstanceID]\n %s</string>
 </resources>

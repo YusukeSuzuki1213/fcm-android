@@ -35,9 +35,8 @@ class MainActivity : AppCompatActivity() {
                     // Log and toast
                     val msg = getString(R.string.msg_token_fmt, token)
                     Log.d(TAG, msg)
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
 
-                    //InstanceIdView.text = msg
+                    instanceIdTextView.text = msg
 
                 })
             // [END retrieve_current_token]
