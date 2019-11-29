@@ -1,19 +1,18 @@
 package com.zozo_tech.fcm_example.com
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , View.OnClickListener {
 
     companion object {
         private const val TAG = "MainActivity"
@@ -26,24 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // InstanceIDを取得
-        getInstanceButton.setOnClickListener {
-            FirebaseInstanceId.getInstance().instanceId
-                .addOnCompleteListener(OnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        Log.w(TAG, "getInstanceId failed", task.exception)
-                        return@OnCompleteListener
-                    }
-
-                    // Get new Instance ID token
-                    val token = task.result?.token
-
-                    val msg = getString(R.string.msg_token_fmt, token)
-                    Log.d(TAG, msg)
-
-                    instanceIdTextView.text = msg
-                })
-        }
+        getInstanceIdButton.setOnClickListener(this)
+        getInstanceTokenButton.setOnClickListener(this)
 
         // recieverの設定
         receiver = object : BroadcastReceiver() {
@@ -68,5 +51,34 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
+    }
+
+    override fun onClick(view: View?) {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+                val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                // Get new Instance ID or token
+                when(view?.id) {
+                    R.id.getInstanceIdButton -> {
+                        instanceIdTextView.text = getString(R.string.msg_instance_id_fmt, task.result?.id)
+                        Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Instance ID"), Snackbar.LENGTH_LONG).show()
+                        clipboard.primaryClip = ClipData.newPlainText("label", task.result?.id)
+                    }
+                    R.id.getInstanceTokenButton -> {
+                        instanceIdTextView.text = getString(R.string.msg_instance_token_fmt, task.result?.token)
+                        Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Token ID"), Snackbar.LENGTH_LONG).show()
+                        clipboard.primaryClip = ClipData.newPlainText("label", task.result?.token)
+                    }
+                }
+
+
+
+                //clipboard.primaryClip = ClipData.newPlainText("label", etEditText01.text)
+            })
+
     }
 }

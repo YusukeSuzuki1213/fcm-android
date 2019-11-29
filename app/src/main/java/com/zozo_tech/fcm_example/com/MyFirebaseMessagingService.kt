@@ -26,7 +26,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         remoteMessage.data.isNotEmpty().let {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
             // Handle message within 10 seconds
-            handleMessage(remoteMessage.data)
+            // textViewにdata payloadを表示
+            // handleMessage(remoteMessage.data)
         }
 
         // Check if message contains a notification payload.
