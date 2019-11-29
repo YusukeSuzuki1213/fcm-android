@@ -1,6 +1,10 @@
 package com.zozo_tech.fcm_example.com
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -8,6 +12,7 @@ import com.google.firebase.messaging.RemoteMessage
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         const val TAG = "MyFirebaseMessagingServ"
+        const val FILTER= "android.intent.action.FILTER"
     }
     // InstanceIDが作られたら呼ばれる
     override fun onNewToken(token: String) {
@@ -16,32 +21,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // ...
-
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: ${remoteMessage.from}")
-
         // Check if message contains a data payload.
         remoteMessage.data.isNotEmpty().let {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
             // Handle message within 10 seconds
-            handleMessage(remoteMessage)
+            handleMessage(remoteMessage.data)
         }
 
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
         }
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    fun handleMessage(remoteMessage: RemoteMessage) {
-        
+    private fun handleMessage(data: Map<String, String>) {
+        val intent: Intent = Intent(FILTER)
+        for((key, value) in data) {
+            intent.putExtra(key, value)
+        }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
-
-
-
 }
