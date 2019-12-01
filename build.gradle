@@ -24,7 +24,3 @@ allprojects {
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     }
 }
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
