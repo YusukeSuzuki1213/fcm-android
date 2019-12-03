@@ -111,13 +111,14 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         val body: String = getString(R.string.slack_payload, content)
 
         // HTTPリクエスト
-        Fuel.post(SLACK_WEBHOOK_URL+"sss").
+        Fuel.post(SLACK_WEBHOOK_URL).
             jsonBody(body).
             responseString { _, _, result ->
                 result.fold({ _ ->
 
                 }, { err ->
-                    throw IllegalArgumentException("sss")
+                    Log.d("http", err.message)
+                    throw Exception("sss")//TODO: 呼び出し側にスローされない
                 })
             }
     }
