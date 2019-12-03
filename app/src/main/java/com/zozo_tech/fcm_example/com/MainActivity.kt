@@ -1,6 +1,7 @@
 package com.zozo_tech.fcm_example.com
 
 import android.content.*
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +12,15 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.extensions.jsonBody
+import com.zozo_tech.fcm_example.com.Constants.Companion.ACTION_FILTER
+import com.zozo_tech.fcm_example.com.Constants.Companion.SLACK_WEBHOOK_URL
 
 class MainActivity : AppCompatActivity() , View.OnClickListener {
 
     companion object {
         private const val TAG = "MainActivity"
-        const val FILTER= "android.intent.action.FILTER"
     }
 
     private lateinit var receiver: BroadcastReceiver
@@ -45,7 +49,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         }
 
         val intentFilter = IntentFilter()
-        intentFilter.addAction(FILTER)
+        intentFilter.addAction(ACTION_FILTER)
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter)
     }
 
@@ -66,18 +70,55 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                 when(view?.id) {
                     R.id.getInstanceIdButton -> {
                         instanceInfoTextView.text = getString(R.string.msg_instance_id_fmt, task.result?.id)
-                        //Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Instance ID"), Snackbar.LENGTH_LONG).show()
-                        //clipboard.primaryClip = ClipData.newPlainText("label", task.result?.id)
+                        Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Instance ID"), Snackbar.LENGTH_LONG).show()
+                        clipboard.primaryClip = ClipData.newPlainText("label", task.result?.id)
                     }
                     R.id.getInstanceTokenButton -> {
                         instanceInfoTextView.text = getString(R.string.msg_instance_token_fmt, task.result?.token)
-                        //Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Token ID"), Snackbar.LENGTH_LONG).show()
-                        //clipboard.primaryClip = ClipData.newPlainText("label", task.result?.token)
+                        Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Token ID"), Snackbar.LENGTH_LONG).show()
+                        clipboard.primaryClip = ClipData.newPlainText("label", task.result?.token)
                     }
-                    R.id.getInstanceIdAndTokenButton -> {
-                        instanceInfoTextView.text = getString(R.string.msg_instance_id_and_token_fmt, task.result?.id, task.result?.token)
+                    R.id.getInstanceIdAndTokenButton -> {instanceInfoTextView.text = getString(R.string.msg_instance_id_and_token_fmt, task.result?.id, task.result?.token)
+                        //Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Token ID"), Snackbar.LENGTH_LONG).show()
+
+                        var messageMap = mutableMapOf<String, String?>()
+                        getDeviceInfo(messageMap)// 参照渡し
+                        messageMap["Token"] = task.result?.token
+                        messageMap["InstanceID"] = task.result?.id
+
+                        runCatching {
+                            sendMessage(messageMap)
+                        }.onSuccess {
+                            Snackbar.make(view!!, getString(R.string.slack_http_request_success), Snackbar.LENGTH_LONG).show()
+                        }.onFailure {
+                            Snackbar.make(view!!, getString(R.string.slack_http_request_failure), Snackbar.LENGTH_LONG).show()
+                        }
                     }
                 }
             })
+    }
+
+    private fun getDeviceInfo(map: MutableMap<String, String?>) {
+        map["端末名"] = Build.MODEL
+    }
+
+    private fun sendMessage(map: MutableMap<String, String?>) {
+        var content: String = ""
+        map.forEach{
+            content += "${it.key}: ${it.value}\n"
+        }
+
+        val body: String = getString(R.string.slack_payload, content)
+
+        // HTTPリクエスト
+        Fuel.post(SLACK_WEBHOOK_URL+"sss").
+            jsonBody(body).
+            responseString { _, _, result ->
+                result.fold({ _ ->
+
+                }, { err ->
+                    throw IllegalArgumentException("sss")
+                })
+            }
     }
 }

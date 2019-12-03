@@ -49,6 +49,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.0.1'
     implementation 'com.google.android.material:material:1.0.0'//snack bar
     ktlint "com.pinterest:ktlint:0.35.0" //ktint
+    implementation 'com.github.kittinunf.fuel:fuel:2.2.1' //fuel
 }
 
 task ktlint(type: JavaExec, group: "verification") {

@@ -7,12 +7,12 @@ import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.zozo_tech.fcm_example.com.Constants.Companion.ACTION_FILTER
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         const val TAG = "MyFirebaseMessagingServ"
-        const val FILTER= "android.intent.action.FILTER"
     }
     // InstanceIDが作られたら呼ばれる
     override fun onNewToken(token: String) {
@@ -37,7 +37,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun handleMessage(data: Map<String, String>) {
-        val intent: Intent = Intent(FILTER)
+        val intent: Intent = Intent(ACTION_FILTER)
         for((key, value) in data) {
             intent.putExtra(key, value)
         }

@@ -4,4 +4,12 @@
     <string name="msg_instance_token_fmt">[ Instance Token ]\n %s</string>
     <string name="msg_instance_id_and_token_fmt">[ Instance ID ]\n%s\n\n[ Instance Token ]\n %s</string>
     <string name="msg_copied_clipboard_fmt">%s をクリップボードにコピーしました。</string>
+    <string name="slack_payload">{ \"text\" :\"
+        ------\n
+        FCM検証用Androidアプリからの通知です。\n
+        ```\n%s```
+        \"}
+    </string>
+    <string name="slack_http_request_success">Slackに通知しました</string>
+    <string name="slack_http_request_failure">エラーが発生しました</string>
 </resources>
