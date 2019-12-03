@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
 
         getInstanceIdButton.setOnClickListener(this)
         getInstanceTokenButton.setOnClickListener(this)
+        getInstanceIdAndTokenButton.setOnClickListener(this)
 
         // recieverの設定
         receiver = object : BroadcastReceiver() {
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                         Log.d(TAG, "intent extras key : ${ bundle.get(key) }")
                         text += "${key}: ${bundle.get(key)}, \n"
                     }
-                    instanceIdTextView.text =  text
+                    instanceInfoTextView.text =  text
                 }
             }
         }
@@ -64,21 +65,19 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                 // Get new Instance ID or token
                 when(view?.id) {
                     R.id.getInstanceIdButton -> {
-                        instanceIdTextView.text = getString(R.string.msg_instance_id_fmt, task.result?.id)
-                        Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Instance ID"), Snackbar.LENGTH_LONG).show()
-                        clipboard.primaryClip = ClipData.newPlainText("label", task.result?.id)
+                        instanceInfoTextView.text = getString(R.string.msg_instance_id_fmt, task.result?.id)
+                        //Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Instance ID"), Snackbar.LENGTH_LONG).show()
+                        //clipboard.primaryClip = ClipData.newPlainText("label", task.result?.id)
                     }
                     R.id.getInstanceTokenButton -> {
-                        instanceIdTextView.text = getString(R.string.msg_instance_token_fmt, task.result?.token)
-                        Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Token ID"), Snackbar.LENGTH_LONG).show()
-                        clipboard.primaryClip = ClipData.newPlainText("label", task.result?.token)
+                        instanceInfoTextView.text = getString(R.string.msg_instance_token_fmt, task.result?.token)
+                        //Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Token ID"), Snackbar.LENGTH_LONG).show()
+                        //clipboard.primaryClip = ClipData.newPlainText("label", task.result?.token)
+                    }
+                    R.id.getInstanceIdAndTokenButton -> {
+                        instanceInfoTextView.text = getString(R.string.msg_instance_id_and_token_fmt, task.result?.id, task.result?.token)
                     }
                 }
-
-
-
-                //clipboard.primaryClip = ClipData.newPlainText("label", etEditText01.text)
             })
-
     }
 }

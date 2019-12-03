@@ -10,35 +10,53 @@
         android:id="@+id/getInstanceIdButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="instance id"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="InstanceIDを取得"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/getInstanceTokenButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        app:layout_constraintBottom_toTopOf="@id/instanceIdTextView" />
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintVertical_chainStyle="packed"/>
 
     <Button
         android:id="@+id/getInstanceTokenButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="instance Token"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="InstanceTokenを取得"
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@id/getInstanceIdAndTokenButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/getInstanceIdButton"
-        app:layout_constraintBottom_toTopOf="@id/instanceIdTextView" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getInstanceIdButton" />
 
+
+    <Button
+        android:id="@+id/getInstanceIdAndTokenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="InstanceIDとInstanceTokenを取得"
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@id/instanceInfoTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getInstanceTokenButton"
+        />
 
     <TextView
-        android:id="@+id/instanceIdTextView"
+        android:id="@+id/instanceInfoTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         android:text=""
         android:textAlignment="center"
+        android:layout_marginTop="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/getInstanceTokenButton" />
+        app:layout_constraintTop_toBottomOf="@id/getInstanceIdAndTokenButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
