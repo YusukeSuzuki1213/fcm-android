@@ -11,13 +11,21 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
+import com.squareup.moshi.Json
 import kotlinx.android.synthetic.main.activity_main.*
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.zozo_tech.fcm_example.com.Constants.Companion.ACTION_FILTER
 import com.zozo_tech.fcm_example.com.Constants.Companion.SLACK_WEBHOOK_URL
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.POST
+import java.lang.Exception
 
-class MainActivity : AppCompatActivity() , View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         private const val TAG = "MainActivity"
@@ -40,10 +48,10 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                     var text: String = ""
                     for (key in bundle.keySet()) {
                         // UIの更新
-                        Log.d(TAG, "intent extras key : ${ bundle.get(key) }")
+                        Log.d(TAG, "intent extras key : ${bundle.get(key)}")
                         text += "${key}: ${bundle.get(key)}, \n"
                     }
-                    instanceInfoTextView.text =  text
+                    instanceInfoTextView.text = text
                 }
             }
         }
@@ -65,34 +73,56 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                     Log.w(TAG, "getInstanceId failed", task.exception)
                     return@OnCompleteListener
                 }
-                val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                // Get new Instance ID or token
-                when(view?.id) {
+                val clipboard: ClipboardManager =
+                    getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+                when (view?.id) {
                     R.id.getInstanceIdButton -> {
-                        instanceInfoTextView.text = getString(R.string.msg_instance_id_fmt, task.result?.id)
-                        Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Instance ID"), Snackbar.LENGTH_LONG).show()
+                        instanceInfoTextView.text =
+                            getString(R.string.msg_instance_id_fmt, task.result?.id)
+                        Snackbar.make(
+                            view!!,
+                            getString(R.string.msg_copied_clipboard_fmt, "Instance ID"),
+                            Snackbar.LENGTH_LONG
+                        ).show()
                         clipboard.primaryClip = ClipData.newPlainText("label", task.result?.id)
                     }
                     R.id.getInstanceTokenButton -> {
-                        instanceInfoTextView.text = getString(R.string.msg_instance_token_fmt, task.result?.token)
-                        Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Token ID"), Snackbar.LENGTH_LONG).show()
+                        instanceInfoTextView.text =
+                            getString(R.string.msg_instance_token_fmt, task.result?.token)
+                        Snackbar.make(
+                            view!!,
+                            getString(R.string.msg_copied_clipboard_fmt, "Token ID"),
+                            Snackbar.LENGTH_LONG
+                        ).show()
                         clipboard.primaryClip = ClipData.newPlainText("label", task.result?.token)
                     }
-                    R.id.getInstanceIdAndTokenButton -> {instanceInfoTextView.text = getString(R.string.msg_instance_id_and_token_fmt, task.result?.id, task.result?.token)
+                    R.id.getInstanceIdAndTokenButton -> {
+                        instanceInfoTextView.text = getString(
+                            R.string.msg_instance_id_and_token_fmt,
+                            task.result?.id,
+                            task.result?.token
+                        )
                         //Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Token ID"), Snackbar.LENGTH_LONG).show()
 
                         var messageMap = mutableMapOf<String, String?>()
                         getDeviceInfo(messageMap)// 参照渡し
-                        messageMap["Token"] = task.result?.token
                         messageMap["InstanceID"] = task.result?.id
+                        messageMap["Token"] = task.result?.token
 
-                        runCatching {
-                            sendMessage(messageMap)
-                        }.onSuccess {
-                            Snackbar.make(view!!, getString(R.string.slack_http_request_success), Snackbar.LENGTH_LONG).show()
-                        }.onFailure {
-                            Snackbar.make(view!!, getString(R.string.slack_http_request_failure), Snackbar.LENGTH_LONG).show()
+                        var content: String = ""
+                        messageMap.forEach {
+                            content += "${it.key}: ${it.value}\n"
                         }
+
+                        val body: String = getString(R.string.slack_payload, content)
+                        sendMessage(body,
+                            onSuccess = {
+                                Snackbar.make(view, getString(R.string.slack_http_request_success), Snackbar.LENGTH_LONG).show()
+                            },
+                            onError = {
+                                Snackbar.make(view, getString(R.string.slack_http_request_failure), Snackbar.LENGTH_LONG).show()
+                            })
                     }
                 }
             })
@@ -100,26 +130,43 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
 
     private fun getDeviceInfo(map: MutableMap<String, String?>) {
         map["端末名"] = Build.MODEL
+        map["製造者名"] = Build.MANUFACTURER
     }
 
-    private fun sendMessage(map: MutableMap<String, String?>) {
-        var content: String = ""
-        map.forEach{
-            content += "${it.key}: ${it.value}\n"
-        }
-
-        val body: String = getString(R.string.slack_payload, content)
+    private fun sendMessage(body: String, onSuccess: () -> Unit, onError: () -> Unit) {
 
         // HTTPリクエスト
-        Fuel.post(SLACK_WEBHOOK_URL).
-            jsonBody(body).
-            responseString { _, _, result ->
-                result.fold({ _ ->
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl("https://hooks.slack.com/services/")
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
 
-                }, { err ->
-                    Log.d("http", err.message)
-                    throw Exception("sss")//TODO: 呼び出し側にスローされない
-                })
+        val service: SlackService = retrofit.create(SlackService::class.java)
+
+        service.sendSlackWebHook(SlackWebHook(body)).enqueue(
+            object : Callback<SlackWebHook> {
+                override fun onResponse(call: Call<SlackWebHook>, response: Response<SlackWebHook>) {
+                    Log.d("TTAG", "onresponse")
+                    onSuccess.invoke()
+                }
+
+                override fun onFailure(call: Call<SlackWebHook>, t: Throwable) {
+                    Log.d("TTAG", "onresponse")
+                    onError.invoke()
+                }
             }
+        )
     }
 }
+
+data class SlackWebHook(
+    @Json(name = "text") val text: String
+)
+
+interface SlackService {
+    @POST("TNBE13L8M/BQUG55KB4/WNk60CDXArxU5XO79i7UJOxn")
+    //fun sendSlackWebHook(@Body slackWebHook: SlackWebHook): Call<SlackWebHook>
+    fun sendSlackWebHook(@Body slackWebHook: SlackWebHook): Call<SlackWebHook>
+}
+
+
