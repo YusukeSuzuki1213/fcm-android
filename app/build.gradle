@@ -50,8 +50,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'//snack bar
     ktlint "com.pinterest:ktlint:0.35.0" //ktlint
     implementation 'com.squareup.retrofit2:retrofit:2.6.1' //Retrofit
-    implementation "com.squareup.retrofit2:converter-moshi:2.6.1" //Moshi
-
+    implementation "com.squareup.retrofit2:converter-moshi:2.6.1" //Retrofit Moshi
 }
 
 task ktlint(type: JavaExec, group: "verification") {

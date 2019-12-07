@@ -5,7 +5,6 @@
     <string name="msg_instance_id_and_token_fmt">[ Instance ID ]\n%s\n\n[ Instance Token ]\n %s</string>
     <string name="msg_copied_clipboard_fmt">%s をクリップボードにコピーしました。</string>
     <string name="slack_payload">
-        ------\n
         [テスト通知]FCM検証用Androidアプリからの通知です。\n
         ```\n%s```
     </string>

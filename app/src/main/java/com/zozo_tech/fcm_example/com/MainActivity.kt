@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import com.squareup.moshi.Json
+import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_main.*
 import com.zozo_tech.fcm_example.com.Constants.Companion.ACTION_FILTER
 import com.zozo_tech.fcm_example.com.Constants.Companion.SLACK_WEBHOOK_URL
@@ -103,7 +104,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             task.result?.id,
                             task.result?.token
                         )
-                        //Snackbar.make(view!!, getString(R.string.msg_copied_clipboard_fmt, "Token ID"), Snackbar.LENGTH_LONG).show()
 
                         var messageMap = mutableMapOf<String, String?>()
                         getDeviceInfo(messageMap)// 参照渡し
@@ -116,6 +116,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         }
 
                         val body: String = getString(R.string.slack_payload, content)
+
                         sendMessage(body,
                             onSuccess = {
                                 Snackbar.make(view, getString(R.string.slack_http_request_success), Snackbar.LENGTH_LONG).show()
@@ -129,7 +130,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getDeviceInfo(map: MutableMap<String, String?>) {
-        map["端末名"] = Build.MODEL
+        map["端末名"]  = Build.MODEL
         map["製造者名"] = Build.MANUFACTURER
     }
 
@@ -138,20 +139,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // HTTPリクエスト
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://hooks.slack.com/services/")
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .build()
 
         val service: SlackService = retrofit.create(SlackService::class.java)
 
         service.sendSlackWebHook(SlackWebHook(body)).enqueue(
-            object : Callback<SlackWebHook> {
-                override fun onResponse(call: Call<SlackWebHook>, response: Response<SlackWebHook>) {
-                    Log.d("TTAG", "onresponse")
-                    onSuccess.invoke()
+            object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    when(response.isSuccessful){
+                        true  -> onSuccess.invoke() // HTTPリクエストのレスポンスのステータスコードが200番台
+                        false -> onError.invoke() // ステータスコードがそれ以外
+                    }
                 }
 
-                override fun onFailure(call: Call<SlackWebHook>, t: Throwable) {
-                    Log.d("TTAG", "onresponse")
+                override fun onFailure(call: Call<String>, t: Throwable) {
                     onError.invoke()
                 }
             }
@@ -160,13 +162,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 }
 
 data class SlackWebHook(
-    @Json(name = "text") val text: String
+     val text: String
 )
 
 interface SlackService {
     @POST("TNBE13L8M/BQUG55KB4/WNk60CDXArxU5XO79i7UJOxn")
-    //fun sendSlackWebHook(@Body slackWebHook: SlackWebHook): Call<SlackWebHook>
-    fun sendSlackWebHook(@Body slackWebHook: SlackWebHook): Call<SlackWebHook>
+    fun sendSlackWebHook(@Body slackWebHook: SlackWebHook): Call<String>
 }
 
 
