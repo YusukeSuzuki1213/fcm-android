@@ -13,9 +13,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import com.squareup.moshi.Json
 import com.squareup.moshi.Moshi
+import com.zozo_tech.fcm_example.com.ConstansSecret.Companion.SLACK_COMMON_WEBHOOK_URI
+import com.zozo_tech.fcm_example.com.ConstansSecret.Companion.SLSCK_WEBHOOK_DEV_CHANNEL
 import kotlinx.android.synthetic.main.activity_main.*
 import com.zozo_tech.fcm_example.com.Constants.Companion.ACTION_FILTER
-import com.zozo_tech.fcm_example.com.Constants.Companion.SLACK_WEBHOOK_URL
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         // HTTPリクエスト
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://hooks.slack.com/services/")
+            .baseUrl(SLACK_COMMON_WEBHOOK_URI)
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .build()
 
@@ -166,7 +167,7 @@ data class SlackWebHook(
 )
 
 interface SlackService {
-    @POST("TNBE13L8M/BQUG55KB4/WNk60CDXArxU5XO79i7UJOxn")
+    @POST(SLSCK_WEBHOOK_DEV_CHANNEL)
     fun sendSlackWebHook(@Body slackWebHook: SlackWebHook): Call<String>
 }
 
