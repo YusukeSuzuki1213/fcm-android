@@ -8,5 +8,8 @@ class Constants {
         //const val HTTP_CLIENT = "CLIENT_RETROFIT2" // 使用するHTTPクライアント
         const val CLIENT_RETROFIT2 = "CLIENT_RETROFIT2"
         const val CLIENT_FUEL = "CLIENT_FUEL"
+        // 非同期処理の方法
+        const val ASYNC_CALLBACK = "ASYNC_CALLBACK"
+        const val ASYNC_COROUTINE = "ASYNC_COROUTINE"
     }
 }

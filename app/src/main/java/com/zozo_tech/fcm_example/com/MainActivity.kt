@@ -14,6 +14,8 @@ import com.zozo_tech.fcm_example.com.ConstansSecret.Companion.SLACK_COMMON_WEBHO
 import com.zozo_tech.fcm_example.com.ConstansSecret.Companion.SLACK_WEBHOOK_DEV_CHANNEL
 import kotlinx.android.synthetic.main.activity_main.*
 import com.zozo_tech.fcm_example.com.Constants.Companion.ACTION_FILTER
+import com.zozo_tech.fcm_example.com.Constants.Companion.ASYNC_CALLBACK
+import com.zozo_tech.fcm_example.com.Constants.Companion.ASYNC_COROUTINE
 import com.zozo_tech.fcm_example.com.Constants.Companion.CLIENT_FUEL
 import com.zozo_tech.fcm_example.com.Constants.Companion.CLIENT_RETROFIT2
 
@@ -128,8 +130,34 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun sendMessage(body: String, onSuccess: () -> Unit, onError: () -> Unit) {
         val requestClient: RequestClient = RequestClient(onSuccess, onError)
+        // Retrofit &　コールバック & 開発用WEBHOOK URL
         requestClient.post(
             client = CLIENT_RETROFIT2,
+            asyncMethod = ASYNC_CALLBACK,
+            baseUrl = SLACK_COMMON_WEBHOOK_URI,
+            resourceUrl = SLACK_WEBHOOK_DEV_CHANNEL,
+            body = body
+        )
+        // Retrofit2 &　Coroutines & 開発用WEBHOOK URL
+        requestClient.post(
+            client = CLIENT_RETROFIT2,
+            asyncMethod = ASYNC_COROUTINE,
+            baseUrl = SLACK_COMMON_WEBHOOK_URI,
+            resourceUrl = SLACK_WEBHOOK_DEV_CHANNEL,
+            body = body
+        )
+        // Fuel & コールバック & 開発用WEBHOOK URL
+        requestClient.post(
+            client = CLIENT_FUEL,
+            asyncMethod = ASYNC_CALLBACK,
+            baseUrl = SLACK_COMMON_WEBHOOK_URI,
+            resourceUrl = SLACK_WEBHOOK_DEV_CHANNEL,
+            body = body
+        )
+        // Fuel & Coroutines & 開発用WEBHOOK URL
+        requestClient.post(
+            client = CLIENT_FUEL,
+            asyncMethod = ASYNC_COROUTINE,
             baseUrl = SLACK_COMMON_WEBHOOK_URI,
             resourceUrl = SLACK_WEBHOOK_DEV_CHANNEL,
             body = body
