@@ -17,22 +17,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     // InstanceIDが作られたら呼ばれる
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
-        // instanceIDを利用しているサーバ等に新しいtokenを送信する処理等
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "From: ${remoteMessage.from}")
-        // Check if message contains a data payload.
         remoteMessage.data.isNotEmpty().let {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
-            // Handle message within 10 seconds
-            // textViewにdata payloadを表示
-            // handleMessage(remoteMessage.data)
-        }
-
-        // Check if message contains a notification payload.
-        remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
+            NotificationUtil.fcmLocalPush(application, remoteMessage.data)
+            handleMessage(remoteMessage.data)
         }
     }
 
@@ -41,6 +32,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         for((key, value) in data) {
             intent.putExtra(key, value)
         }
+        // TODO: deprecatedなのでLiveDataで実装
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 }
