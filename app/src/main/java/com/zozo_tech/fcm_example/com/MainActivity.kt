@@ -1,24 +1,28 @@
 package com.zozo_tech.fcm_example.com
 
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import com.zozo_tech.fcm_example.com.ConstansSecret.Companion.SLACK_COMMON_WEBHOOK_URI
 import com.zozo_tech.fcm_example.com.ConstansSecret.Companion.SLACK_WEBHOOK_DEV_CHANNEL
-import kotlinx.android.synthetic.main.activity_main.*
 import com.zozo_tech.fcm_example.com.Constants.Companion.ACTION_FILTER
 import com.zozo_tech.fcm_example.com.Constants.Companion.ASYNC_CALLBACK
 import com.zozo_tech.fcm_example.com.Constants.Companion.ASYNC_COROUTINE
 import com.zozo_tech.fcm_example.com.Constants.Companion.CLIENT_FUEL
 import com.zozo_tech.fcm_example.com.Constants.Companion.CLIENT_RETROFIT2
-
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -44,7 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     for (key in bundle.keySet()) {
                         // UIの更新
                         Log.d(TAG, "intent extras key : ${bundle.get(key)}")
-                        text += "${key}: ${bundle.get(key)}, \n"
+                        text += "$key: ${bundle.get(key)}, \n"
                     }
                     instanceInfoTextView.text = text
                 }
@@ -100,7 +104,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         )
 
                         var messageMap = mutableMapOf<String, String?>()
-                        getDeviceInfo(messageMap)// 参照渡し
+                        getDeviceInfo(messageMap) // 参照渡し
                         messageMap["InstanceID"] = task.result?.id
                         messageMap["Token"] = task.result?.token
 
@@ -124,7 +128,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getDeviceInfo(map: MutableMap<String, String?>) {
-        map["端末名"]  = Build.MODEL
+        map["端末名"] = Build.MODEL
         map["製造者名"] = Build.MANUFACTURER
     }
 
@@ -164,6 +168,3 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         )
     }
 }
-
-
-

@@ -1,8 +1,7 @@
 package com.zozo_tech.fcm_example.com
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

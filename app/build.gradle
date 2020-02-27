@@ -64,10 +64,12 @@ task ktlint(type: JavaExec, group: "verification") {
     classpath = configurations.ktlint
     main = "com.pinterest.ktlint.Main"
     ignoreExitValue = true
-    args "--android", "--color", "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/reports/tlint-results.xml", "src/**/*.kt"
-    // to generate report in checkstyle format prepend following args:
-    // "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
-    // see https://github.com/pinterest/ktlint#usage for more
+    args "--android",
+            "--verbose", //Show error codes
+            "--color", //Make output colorful
+            "--color-name=RED", //
+            "--reporter=plain",// Reportのふファイル形式
+            "--reporter=checkstyle,output=${buildDir}/reports/ktlint-results.xml", "src/**/*.kt"
 }
 check.dependsOn ktlint
 
@@ -75,5 +77,5 @@ task ktlintFormat(type: JavaExec, group: "formatting") {
     description = "Fix Kotlin code style deviations."
     classpath = configurations.ktlint
     main = "com.pinterest.ktlint.Main"
-    args "--android", "--color", "src/**/*.kt"
+    args "-F", "src/**/*.kt"
 }

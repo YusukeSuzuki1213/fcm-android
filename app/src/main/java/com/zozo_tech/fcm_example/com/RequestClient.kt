@@ -2,8 +2,6 @@ package com.zozo_tech.fcm_example.com
 
 import android.util.Log
 import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.awaitResponse
-import com.github.kittinunf.fuel.core.awaitResponseResult
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.github.kittinunf.result.Result
@@ -14,7 +12,7 @@ import com.zozo_tech.fcm_example.com.Constants.Companion.ASYNC_CALLBACK
 import com.zozo_tech.fcm_example.com.Constants.Companion.ASYNC_COROUTINE
 import com.zozo_tech.fcm_example.com.Constants.Companion.CLIENT_FUEL
 import com.zozo_tech.fcm_example.com.Constants.Companion.CLIENT_RETROFIT2
-import kotlinx.coroutines.*
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,12 +31,12 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
         when (client) {
             CLIENT_RETROFIT2 ->
                 when (asyncMethod) {
-                    ASYNC_CALLBACK  -> postRetrofit2WithCallback(baseUrl, resourceUrl, body)
+                    ASYNC_CALLBACK -> postRetrofit2WithCallback(baseUrl, resourceUrl, body)
                     ASYNC_COROUTINE -> postRetrofit2WithCoroutine(baseUrl, resourceUrl, body)
                 }
             CLIENT_FUEL ->
                 when (asyncMethod) {
-                    ASYNC_CALLBACK  -> postFuelWithCallback(baseUrl, resourceUrl, body)
+                    ASYNC_CALLBACK -> postFuelWithCallback(baseUrl, resourceUrl, body)
                     ASYNC_COROUTINE -> postFuelWithCoroutine(baseUrl, resourceUrl, body)
                 }
             else -> Log.d(TAG, "HTTPクライアントを正しく設定してください")
@@ -71,8 +69,8 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
 
         val service = retrofit.create(SlackService::class.java)
 
-        val call = when(resourceUrl) {
-            SLACK_WEBHOOK_DEV_CHANNEL     -> service.sendSlackWebHookDevCallback(SlackWebHook(body))
+        val call = when (resourceUrl) {
+            SLACK_WEBHOOK_DEV_CHANNEL -> service.sendSlackWebHookDevCallback(SlackWebHook(body))
             SLACK_WEBHOOK_RELEASE_CHANNEL -> service.sendSlackWebHookReleaseCallback(SlackWebHook(body))
             else -> service.sendSlackWebHookDevCallback(SlackWebHook(body))
         }
@@ -105,8 +103,8 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
 
         val service = retrofit.create(SlackService::class.java)
         runBlocking {
-            val result = when(resourceUrl) {
-                SLACK_WEBHOOK_DEV_CHANNEL     -> service.sendSlackWebHookDevCoroutine(SlackWebHook(body))
+            val result = when (resourceUrl) {
+                SLACK_WEBHOOK_DEV_CHANNEL -> service.sendSlackWebHookDevCoroutine(SlackWebHook(body))
                 SLACK_WEBHOOK_RELEASE_CHANNEL -> service.sendSlackWebHookReleaseCoroutine(SlackWebHook(body))
                 else -> service.sendSlackWebHookDevCoroutine(SlackWebHook(body))
             }
@@ -158,4 +156,3 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
         }
     }
 }
-

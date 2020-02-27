@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 
-
 class NotificationUtil {
     companion object {
         private val VIBRATE_TIME_MS: LongArray = longArrayOf(100, 500)
@@ -33,9 +32,9 @@ class NotificationUtil {
 
             map["uri"]?.also {
                 // URLが設定されている場合 -> 暗黙的なIntentを投げる
-                val uri: Uri = Uri.parse(it);
-                val intent: Intent =  Intent("android.intent.action.VIEW", uri)
-                builder.setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT));
+                val uri: Uri = Uri.parse(it)
+                val intent: Intent = Intent("android.intent.action.VIEW", uri)
+                builder.setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT))
             } ?: run {
                 // URLが設定されていない場合 -> 通常遷移 MainActivityへ
                 val intent: Intent = Intent(context, MainActivity::class.java)
@@ -71,7 +70,7 @@ class NotificationUtil {
                 enableLights(true)
                 lightColor = Color.WHITE
 
-                enableVibration(true);
+                enableVibration(true)
                 vibrationPattern = VIBRATE_TIME_MS
             }
         }
