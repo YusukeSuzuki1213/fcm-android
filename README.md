@@ -13,3 +13,4 @@ Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI等を実
 - [ ] Firebase Test Lab
 - [ ] 通知チャンネルを使用し通知の種類を増やす
 - [ ] commit時にlintが通らなかったらPushできないように
+- [ ] APIのキーの管理をスマートに
