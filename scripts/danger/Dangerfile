@@ -1,0 +1,34 @@
+# Sometimes it's a README fix, or something like that - which isn't relevant for
+# including in a project's CHANGELOG for example
+declared_trivial = github.pr_title.include? "#trivial"
+
+# Make it more obvious that a PR is a work in progress and shouldn't be merged yet
+warn("PR is classed as Work in Progress") if github.pr_title.include? "[WIP]"
+
+# Don't let testing shortcuts get into master by accident
+fail("fdescribe left in tests") if `grep -r fdescribe specs/ `.length > 1
+fail("fit left in tests") if `grep -r fit specs/ `.length > 1
+
+# Android Lint
+begin
+  # Skip gradle lint task
+  android_lint.skip_gradle_task = true
+
+  # Set report file path
+  android_lint.report_file = "app/build/reports/lint-results-debug.xml"
+
+  # Lint only added/modified files
+  android_lint.filtering = true
+
+  # Report android lint warnings
+  android_lint.lint(inline_mode: true)
+end
+
+# Ktlint
+begin
+  # Enable inline comment mode
+  checkstyle_reports.inline_comment = true
+
+  # Set file path and report ktlint warnings
+  checkstyle_reports.report("app/build/reports/ktlint-results.xml", modified_files_only: true)
+end
