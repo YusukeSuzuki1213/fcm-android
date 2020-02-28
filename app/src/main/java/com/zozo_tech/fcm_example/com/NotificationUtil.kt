@@ -10,13 +10,14 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NotificationUtil {
     companion object {
         private val VIBRATE_TIME_MS: LongArray = longArrayOf(100, 500)
         private const val FCM_CHANNEL_ID = "fcm_notification"
         private const val FCM_PUSH_CHANNEL_NAME = R.string.channel_name_fcm
-        private const val NOTICE_ID = 1
 
         fun createChannel(context: Context) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -55,7 +56,7 @@ class NotificationUtil {
                 }
             }
 
-            manager.notify(NOTICE_ID, builder.build())
+            manager.notify(createID(), builder.build())
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -73,6 +74,11 @@ class NotificationUtil {
                 enableVibration(true)
                 vibrationPattern = VIBRATE_TIME_MS
             }
+        }
+
+        private fun createID(): Int {
+            val now = Date()
+            return Integer.parseInt(SimpleDateFormat("mmssSSSS",  Locale.JAPAN).format(now))
         }
     }
 }
