@@ -8,6 +8,5 @@
 .externalNativeBuild
 .cxx
 *~
-/app/google-services.json
-/app/src/main/java/com/zozo_tech/fcm_example/com/ConstansSecret.kt
+
 
