@@ -72,7 +72,7 @@ task ktlint(type: JavaExec, group: "verification") {
             "--color", //Make output colorful
             "--color-name=RED", //
             "--reporter=plain",// Reportのふファイル形式
-            "--reporter=checkstyle,output=${buildDir}/reports/ktlint-results.xml", "src/**/*.kt"
+            "--reporter=checkstyle,output=${buildDir}/reports/ktlint/ktlint-results.xml", "src/**/*.kt"
 }
 check.dependsOn ktlint
 
