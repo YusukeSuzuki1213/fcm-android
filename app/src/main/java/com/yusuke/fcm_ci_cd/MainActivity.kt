@@ -23,11 +23,9 @@ import com.yusuke.fcm_ci_cd.Constants.Companion.CLIENT_RETROFIT2
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-
     companion object {
         private const val TAG = "MainActivity"
     }
-
     private lateinit var receiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +76,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         instanceInfoTextView.text =
                             getString(R.string.msg_instance_id_fmt, task.result?.id)
                         Snackbar.make(
-                            view!!,
+                            view,
                             getString(R.string.msg_copied_clipboard_fmt, "Instance ID"),
                             Snackbar.LENGTH_LONG
                         ).show()
@@ -88,7 +86,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         instanceInfoTextView.text =
                             getString(R.string.msg_instance_token_fmt, task.result?.token)
                         Snackbar.make(
-                            view!!,
+                            view,
                             getString(R.string.msg_copied_clipboard_fmt, "Token ID"),
                             Snackbar.LENGTH_LONG
                         ).show()

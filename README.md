@@ -4,14 +4,16 @@
 # fcm-android
 Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI等を実装。
 - [x] FCM通知
-- [x] Locla Push通知
+- [x] Local Push通知
 - [x] Slack WebhookへFCMペイロードを送信
+    - Retrofit2とコールバック, Retrofit2とCoroutines
+    - Fuelとコールバック, FuelとCoroutines
 - [x] ktlintの設定
 - [x] BitriseでCIをまわす
 - [x] Github ActionsとDangerを連携しLintチェックをする
 - [ ] DeployGate
 - [ ] Firebase Test Lab
 - [ ] 通知チャンネルを使用し通知の種類を増やす
-- [ ] commit時にlintが通らなかったらPushできないように
+- [x] gitのpre-commit hookを使用しcommit時にLintチェックをする
 - [x] APIのキーの管理をスマートに
 
