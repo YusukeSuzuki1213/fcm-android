@@ -5,12 +5,17 @@
 Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI等を実装。
 - [x] FCM通知
 - [x] Local Push通知
+    - [x] FCM通知をハンドリングし、Local Pushとして通知
 - [x] Slack WebhookへFCMペイロードを送信
-    - Retrofit2とコールバック, Retrofit2とCoroutines
-    - Fuelとコールバック, FuelとCoroutines
+    - [x] Retrofit2とコールバック
+    - [x] Retrofit2とCoroutines
+    - [x] Fuelとコールバック
+    - [x] FuelとCoroutines
 - [x] ktlintの設定
 - [x] BitriseでCIをまわす
-- [x] Github ActionsとDangerを連携しLintチェックをする
+- [x] Github ActionsとDangerを連携
+    - PR時にGithub ActionsでLintチェック
+    - Lintチェックの指摘箇所をPRコメントとして表示
 - [ ] DeployGate
 - [ ] Firebase Test Lab
 - [ ] 通知チャンネルを使用し通知の種類を増やす
