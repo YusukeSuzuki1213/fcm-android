@@ -26,9 +26,6 @@ end
 
 # Ktlint
 begin
-  # Enable inline comment mode
-  checkstyle_reports.inline_comment = true
-
-  # Set file path and report ktlint warnings
-  checkstyle_reports.report("app/build/reports/ktlint-results.xml", modified_files_only: true)
+  checkstyle_format.base_path = Dir.pwd
+  checkstyle_format.report 'app/build/reports/ktlint/ktlint-results.xml'
 end
