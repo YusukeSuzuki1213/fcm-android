@@ -17,13 +17,16 @@ android {
     buildToolsVersion "28.0.3"
 
     defaultConfig {
-        applicationId "com.zozo_tech.fcm_example.com"
+        applicationId "com.yusuke.fcm_ci_cd"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        def commonUri  = System.getenv("SLACK_COMMON_WEBHOOK_URI")
+        def channelUri = System.getenv("SLACK_WEBHOOK_DEV_CHANNEL")
+        buildConfigField "String", "SLACK_COMMON_WEBHOOK_URI",  commonUri   != null ? "\""+commonUri+"\"" : "\"\""
+        buildConfigField "String", "SLACK_WEBHOOK_DEV_CHANNEL", channelUri  != null ? "\""+channelUri+"\""  : "\"\""
     }
 
     buildTypes {
@@ -69,7 +72,7 @@ task ktlint(type: JavaExec, group: "verification") {
             "--color", //Make output colorful
             "--color-name=RED", //
             "--reporter=plain",// Reportのふファイル形式
-            "--reporter=checkstyle,output=${buildDir}/reports/ktlint-results.xml", "src/**/*.kt"
+            "--reporter=checkstyle,output=${buildDir}/reports/ktlint/ktlint-results.xml", "src/**/*.kt"
 }
 check.dependsOn ktlint
 

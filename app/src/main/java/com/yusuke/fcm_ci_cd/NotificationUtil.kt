@@ -1,4 +1,4 @@
-package com.zozo_tech.fcm_example.com
+package com.yusuke.fcm_ci_cd
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -11,7 +11,8 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class NotificationUtil {
     companion object {
@@ -23,23 +24,39 @@ class NotificationUtil {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 return
             }
-            val manager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val manager: NotificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(createFcmPushChannel(context))
         }
 
         fun fcmLocalPush(context: Context, map: Map<String, String>) {
             val builder = Notification.Builder(context)
-            val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val manager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             map["uri"]?.also {
                 // URLが設定されている場合 -> 暗黙的なIntentを投げる
                 val uri: Uri = Uri.parse(it)
                 val intent: Intent = Intent("android.intent.action.VIEW", uri)
-                builder.setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT))
+                builder.setContentIntent(
+                    PendingIntent.getActivity(
+                        context,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_ONE_SHOT
+                    )
+                )
             } ?: run {
                 // URLが設定されていない場合 -> 通常遷移 MainActivityへ
                 val intent: Intent = Intent(context, MainActivity::class.java)
-                builder.setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT))
+                builder.setContentIntent(
+                    PendingIntent.getActivity(
+                        context,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_ONE_SHOT
+                    )
+                )
             }
 
             builder.apply {
@@ -78,7 +95,7 @@ class NotificationUtil {
 
         private fun createID(): Int {
             val now = Date()
-            return Integer.parseInt(SimpleDateFormat("mmssSSSS",  Locale.JAPAN).format(now))
+            return Integer.parseInt(SimpleDateFormat("mmssSSSS", Locale.JAPAN).format(now))
         }
     }
 }
