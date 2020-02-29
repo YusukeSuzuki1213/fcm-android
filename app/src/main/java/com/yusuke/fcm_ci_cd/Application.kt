@@ -1,4 +1,4 @@
-package com.zozo_tech.fcm_example.com
+package com.yusuke.fcm_ci_cd
 
 import android.app.Application
 

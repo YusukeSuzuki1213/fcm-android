@@ -1,4 +1,4 @@
-package com.zozo_tech.fcm_example.com
+package com.yusuke.fcm_ci_cd
 
 import android.content.BroadcastReceiver
 import android.content.ClipData
@@ -15,13 +15,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
-import com.zozo_tech.fcm_example.com.ConstansSecret.Companion.SLACK_COMMON_WEBHOOK_URI
-import com.zozo_tech.fcm_example.com.ConstansSecret.Companion.SLACK_WEBHOOK_DEV_CHANNEL
-import com.zozo_tech.fcm_example.com.Constants.Companion.ACTION_FILTER
-import com.zozo_tech.fcm_example.com.Constants.Companion.ASYNC_CALLBACK
-import com.zozo_tech.fcm_example.com.Constants.Companion.ASYNC_COROUTINE
-import com.zozo_tech.fcm_example.com.Constants.Companion.CLIENT_FUEL
-import com.zozo_tech.fcm_example.com.Constants.Companion.CLIENT_RETROFIT2
+import com.yusuke.fcm_ci_cd.Constants.Companion.ACTION_FILTER
+import com.yusuke.fcm_ci_cd.Constants.Companion.ASYNC_CALLBACK
+import com.yusuke.fcm_ci_cd.Constants.Companion.ASYNC_COROUTINE
+import com.yusuke.fcm_ci_cd.Constants.Companion.CLIENT_FUEL
+import com.yusuke.fcm_ci_cd.Constants.Companion.CLIENT_RETROFIT2
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -117,10 +115,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                         sendMessage(body,
                             onSuccess = {
-                                Snackbar.make(view, getString(R.string.slack_http_request_success), Snackbar.LENGTH_LONG).show()
+                                Snackbar.make(
+                                    view,
+                                    getString(R.string.slack_http_request_success),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
                             },
                             onError = {
-                                Snackbar.make(view, getString(R.string.slack_http_request_failure), Snackbar.LENGTH_LONG).show()
+                                Snackbar.make(
+                                    view,
+                                    getString(R.string.slack_http_request_failure),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
                             })
                     }
                 }
@@ -138,32 +144,32 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         requestClient.post(
             client = CLIENT_RETROFIT2,
             asyncMethod = ASYNC_CALLBACK,
-            baseUrl = SLACK_COMMON_WEBHOOK_URI,
-            resourceUrl = SLACK_WEBHOOK_DEV_CHANNEL,
+            baseUrl = BuildConfig.SLACK_COMMON_WEBHOOK_URI,
+            resourceUrl = BuildConfig.SLACK_WEBHOOK_DEV_CHANNEL,
             body = body
         )
         // Retrofit2 &　Coroutines & 開発用WEBHOOK URL
         requestClient.post(
             client = CLIENT_RETROFIT2,
             asyncMethod = ASYNC_COROUTINE,
-            baseUrl = SLACK_COMMON_WEBHOOK_URI,
-            resourceUrl = SLACK_WEBHOOK_DEV_CHANNEL,
+            baseUrl = BuildConfig.SLACK_COMMON_WEBHOOK_URI,
+            resourceUrl = BuildConfig.SLACK_WEBHOOK_DEV_CHANNEL,
             body = body
         )
         // Fuel & コールバック & 開発用WEBHOOK URL
         requestClient.post(
             client = CLIENT_FUEL,
             asyncMethod = ASYNC_CALLBACK,
-            baseUrl = SLACK_COMMON_WEBHOOK_URI,
-            resourceUrl = SLACK_WEBHOOK_DEV_CHANNEL,
+            baseUrl = BuildConfig.SLACK_COMMON_WEBHOOK_URI,
+            resourceUrl = BuildConfig.SLACK_WEBHOOK_DEV_CHANNEL,
             body = body
         )
         // Fuel & Coroutines & 開発用WEBHOOK URL
         requestClient.post(
             client = CLIENT_FUEL,
             asyncMethod = ASYNC_COROUTINE,
-            baseUrl = SLACK_COMMON_WEBHOOK_URI,
-            resourceUrl = SLACK_WEBHOOK_DEV_CHANNEL,
+            baseUrl = BuildConfig.SLACK_COMMON_WEBHOOK_URI,
+            resourceUrl = BuildConfig.SLACK_WEBHOOK_DEV_CHANNEL,
             body = body
         )
     }
