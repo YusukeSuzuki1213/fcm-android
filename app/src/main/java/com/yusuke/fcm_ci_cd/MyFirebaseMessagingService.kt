@@ -1,11 +1,11 @@
-package com.zozo_tech.fcm_example.com
+package com.yusuke.fcm_ci_cd
 
 import android.content.Intent
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.zozo_tech.fcm_example.com.Constants.Companion.ACTION_FILTER
+import com.yusuke.fcm_ci_cd.Constants.Companion.ACTION_FILTER
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
