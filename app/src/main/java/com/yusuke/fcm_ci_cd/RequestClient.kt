@@ -25,7 +25,13 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
         const val TAG = "RequestClient"
     }
 
-    fun post(client: String, asyncMethod: String, baseUrl: String, resourceUrl: String, body: String) {
+    fun post(
+        client: String,
+        asyncMethod: String,
+        baseUrl: String,
+        resourceUrl: String,
+        body: String
+    ) {
         when (client) {
             CLIENT_RETROFIT2 ->
                 when (asyncMethod) {
@@ -52,11 +58,11 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
         @POST(BuildConfig.SLACK_WEBHOOK_DEV_CHANNEL)
         suspend fun sendSlackWebHookDevCoroutine(@Body slackWebHook: SlackWebHook): Response<String>
 
-        //@POST(SLACK_WEBHOOK_RELEASE_CHANNEL)
-        //fun sendSlackWebHookReleaseCallback(@Body slackWebHook: SlackWebHook): Call<String>
+        // @POST(SLACK_WEBHOOK_RELEASE_CHANNEL)
+        // fun sendSlackWebHookReleaseCallback(@Body slackWebHook: SlackWebHook): Call<String>
 
-        //@POST(SLACK_WEBHOOK_RELEASE_CHANNEL)
-        //suspend fun sendSlackWebHookReleaseCoroutine(@Body slackWebHook: SlackWebHook): Response<String>
+        // @POST(SLACK_WEBHOOK_RELEASE_CHANNEL)
+        // suspend fun sendSlackWebHookReleaseCoroutine(@Body slackWebHook: SlackWebHook): Response<String>
     }
 
     private fun postRetrofit2WithCallback(baseUrl: String, resourceUrl: String, body: String) {
@@ -74,8 +80,14 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
         }
 
         val call = when (resourceUrl) {
-            BuildConfig.SLACK_WEBHOOK_DEV_CHANNEL -> service.getOrNull()?.sendSlackWebHookDevCallback(SlackWebHook(body))
-            //SLACK_WEBHOOK_RELEASE_CHANNEL -> service.sendSlackWebHookReleaseCallback(SlackWebHook(body))
+            BuildConfig.SLACK_WEBHOOK_DEV_CHANNEL ->
+                service.getOrNull()?.sendSlackWebHookDevCallback(
+                    SlackWebHook(body)
+                )
+//             SLACK_WEBHOOK_RELEASE_CHANNEL ->
+//                 service.sendSlackWebHookReleaseCallback(
+//                     SlackWebHook(body)
+//                 )
             else -> service.getOrNull()?.sendSlackWebHookDevCallback(SlackWebHook(body))
         }
 
@@ -83,8 +95,10 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
             object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     when {
-                        response.isSuccessful -> onSuccess.invoke() // HTTPリクエストのレスポンスのステータスコードが200番台
-                        else -> { // ステータスコードがそれ以外
+                        // HTTPリクエストのレスポンスのステータスコードが200番台
+                        response.isSuccessful -> onSuccess.invoke()
+                        // ステータスコードがそれ以外
+                        else -> {
                             Log.d(TAG, response.errorBody().toString())
                             onError.invoke()
                         }
@@ -115,11 +129,14 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
 
         runBlocking {
             val result = when (resourceUrl) {
-                BuildConfig.SLACK_WEBHOOK_DEV_CHANNEL -> service.getOrNull()?.sendSlackWebHookDevCoroutine(SlackWebHook(body))
-                //SLACK_WEBHOOK_RELEASE_CHANNEL -> service.sendSlackWebHookReleaseCoroutine(SlackWebHook(body))
+                BuildConfig.SLACK_WEBHOOK_DEV_CHANNEL ->
+                    service.getOrNull()?.sendSlackWebHookDevCoroutine(
+                        SlackWebHook(body)
+                )
+                // SLACK_WEBHOOK_RELEASE_CHANNEL -> service.sendSlackWebHookReleaseCoroutine(SlackWebHook(body))
                 else -> service.getOrNull()?.sendSlackWebHookDevCoroutine(SlackWebHook(body))
             }
-            when(result?.isSuccessful) {
+            when (result?.isSuccessful) {
                 true -> onSuccess.invoke() // HTTPリクエストのレスポンスのステータスコードが200番台
                 else -> { // ステータスコードがそれ以外
                     Log.d(TAG, result?.errorBody().toString())
@@ -166,7 +183,8 @@ class RequestClient(val onSuccess: () -> Unit, val onError: () -> Unit) {
                     .third // TODO: ここわかりにくくね？
                     .fold(
                         { _ -> onSuccess.invoke() }, // HTTPリクエストのレスポンスのステータスコードが200番台
-                        { error -> // それ以外
+                        { error ->
+                            // それ以外
                             Log.d(TAG, error.message)
                             onError.invoke()
                         }

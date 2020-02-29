@@ -115,10 +115,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                         sendMessage(body,
                             onSuccess = {
-                                Snackbar.make(view, getString(R.string.slack_http_request_success), Snackbar.LENGTH_LONG).show()
+                                Snackbar.make(
+                                    view,
+                                    getString(R.string.slack_http_request_success),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
                             },
                             onError = {
-                                Snackbar.make(view, getString(R.string.slack_http_request_failure), Snackbar.LENGTH_LONG).show()
+                                Snackbar.make(
+                                    view,
+                                    getString(R.string.slack_http_request_failure),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
                             })
                     }
                 }

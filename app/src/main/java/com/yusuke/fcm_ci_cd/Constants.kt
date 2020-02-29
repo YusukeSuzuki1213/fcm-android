@@ -1,8 +1,5 @@
 package com.yusuke.fcm_ci_cd
 
-import android.content.Context
-import android.content.pm.PackageManager
-
 class Constants() {
 
     companion object {
