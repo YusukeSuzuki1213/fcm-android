@@ -1,6 +1,6 @@
 [![Build Status](https://app.bitrise.io/app/2cbe9beac1c1608b/status.svg?token=XC2UU4SVXH0riraHDOROvQ&branch=master)](https://app.bitrise.io/app/2cbe9beac1c1608b)
 ![](https://github.com/YusukeSuzuki1213/fcm-android/workflows/Inspection/badge.svg)
-![](https://github.com/YusukeSuzuki1213/fcm-android/workflows/Deploygate/badge.svg)
+![](https://github.com/YusukeSuzuki1213/fcm-android/workflows/DeployGate/badge.svg)
 
 # fcm-android
 Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI等を実装。
@@ -21,8 +21,14 @@ Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI等を実
     - [x] Lintチェックの指摘箇所をPRコメントとして表示
 - [x] gitのpre-commit hookを使用しcommit時にLintチェックをする
 - [x] APIのキーの管理をスマートに
-- [ ] DeployGate
+- [x] DeployGateでアプリ配布を自動化
+    - [x] `pull_req`を出したら、DeployGate上のAPKを更新
+    - [x] masterに`push`されたら、DeployGate上のAPKを更新
 - [ ] Firebase Test Lab
 - [ ] 通知チャンネルを使用し通知の種類を増やす
 - [ ] Daggerで依存性を注入
 - [ ] アニメーション
+
+# 配布
+アプリは以下のURLからDLできます。(DLにはパスワードが必要です)
+[]()
