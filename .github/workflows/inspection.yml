@@ -1,4 +1,4 @@
-name: Run inspection on push
+name: Inspection
 
 on: pull_request
 
