@@ -1,7 +1,8 @@
 name: DeployGate
 
 on:
-  deployment:
+  repository_dispatch:
+    types: [trigger-deploygate]
   push:
     branches:
       - master

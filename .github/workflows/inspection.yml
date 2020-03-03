@@ -2,7 +2,8 @@ name: Inspection
 
 on:
   pull_request:
-  deployment:
+  repository_dispatch:
+    types: [trigger-inspection]
 
 jobs:
   inspection:
