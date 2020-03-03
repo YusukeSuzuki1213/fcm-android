@@ -32,5 +32,5 @@ Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI/CD等を
 - [ ] アニメーション
 
 # 配布
-アプリは以下のURLからDLできます。(DLにはパスワードが必要です)
-[https://dply.me/2gsf3x](https://dply.me/2gsf3x)
+アプリはこのURLからDLできます。[https://dply.me/2gsf3x](https://dply.me/2gsf3x)
+(DLにはパスワードが必要です)
