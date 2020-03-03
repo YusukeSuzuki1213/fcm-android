@@ -8,5 +8,4 @@
 .externalNativeBuild
 .cxx
 *~
-
-
+deploygate_pass.txt
