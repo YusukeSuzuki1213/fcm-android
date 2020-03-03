@@ -3,7 +3,7 @@
 ![](https://github.com/YusukeSuzuki1213/fcm-android/workflows/DeployGate/badge.svg)
 
 # fcm-android
-Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI等を実装。
+Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI/CD等を実装。
 
 # 内容
 - [x] FCM通知
