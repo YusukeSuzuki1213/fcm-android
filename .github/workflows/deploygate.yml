@@ -16,7 +16,7 @@ jobs:
       - name: Distribute App
         run: |
           curl \
-            -H "Authorization: token ${{secrets.DEPLOYGATE_TOKEN}}" \
-            -F "file=@/app/build/outputs/apk/debug/app-debug.apk" \
+            -F "token=${{secrets.DEPLOYGATE_TOKEN}}" \
+            -F "file=@app/build/outputs/apk/debug/app-debug.apk" \
             -F "distribution_name=$GITHUB_HEAD_REF" \
             https://deploygate.com/api/users/${{secrets.DEPLOYGATE_USER_NAME}}/apps
