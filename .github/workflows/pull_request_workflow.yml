@@ -87,11 +87,12 @@ jobs:
         run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}
 
       - name: Run Instrumentation Tests in Firebase Test Lab
-        run: gcloud firebase test android run \
-          --type robo \
-          --app app-debug/app-debug.apk \
-          --device model=Nexus6,version=21,locale=ja,orientation=portrait  \
-          --device model=sailfish, version=25, locale=ja, orientation=portrait \
-          --device model=zeroflte, version=22, locale=ja, orientation=portrait \
-          --timeout 90s
+        run: |
+          gcloud firebase test android run \
+            --type robo \
+            --app app-debug/app-debug.apk \
+            --device model=Nexus6,version=21,locale=ja,orientation=portrait  \
+            --device model=sailfish,version=25,locale=ja,orientation=portrait \
+            --device model=zeroflte,version=22,locale=ja,orientation=portrait \
+            --timeout 90s
 
