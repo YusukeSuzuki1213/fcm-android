@@ -22,7 +22,6 @@ Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI/CD等を
 - [x] gitのpre-commit hookを使用しcommit時にLintチェックをする
 - [x] APIのキーの管理をスマートに
 - [x] DeployGateでアプリ配布を自動化
-    - [x] `pull_req`を出したら、DeployGate上のAPKを更新
     - [x] masterに`push`されたら、DeployGate上のAPKを更新
 - [ ] Firebase Test Lab
 - [ ] 通知チャンネルを使用し通知の種類を増やす
