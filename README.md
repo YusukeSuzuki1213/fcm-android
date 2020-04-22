@@ -1,7 +1,6 @@
 [![Build Status](https://app.bitrise.io/app/2cbe9beac1c1608b/status.svg?token=XC2UU4SVXH0riraHDOROvQ&branch=master)](https://app.bitrise.io/app/2cbe9beac1c1608b)
 ![](https://github.com/YusukeSuzuki1213/fcm-android/workflows/push%20workflow/badge.svg)
 ![](https://github.com/YusukeSuzuki1213/fcm-android/workflows/pull%20request%20workflow/badge.svg)
-！[](https://img.shields.io/badge/license-Apache%202-blue)
 
 # fcm-android
 Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI/CD等を実装。
