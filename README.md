@@ -23,6 +23,7 @@ Firebase Cloud Messaging(=FCM)など通知に関連するコード、CI/CD等を
 - [x] APIのキーの管理をスマートに
 - [x] DeployGateでアプリ配布を自動化
     - [x] masterに`push`されたら、DeployGate上のAPKを更新
+    - [x] `pull request`があったら、そのAPKをDeployGate上にアップロード
 - [x] Firebase Test Lab(=FTL)
     - [x] pull_requestを出した時に, FTLにAPKをアップするworkflowを作成
     - [x] Roboテストの実施
