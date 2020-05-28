@@ -38,7 +38,7 @@ jobs:
         run: |
           gcloud firebase test android run \
             --type robo \
-            --app app-debug/app-debug.apk \
+            --app app/build/outputs/apk/debug/app-debug.apk \
             --device model=Nexus6,version=21,locale=ja,orientation=portrait  \
             --device model=sailfish,version=25,locale=ja,orientation=portrait \
             --device model=zeroflte,version=22,locale=ja,orientation=portrait \
