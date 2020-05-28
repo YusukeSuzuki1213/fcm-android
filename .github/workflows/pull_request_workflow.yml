@@ -44,4 +44,3 @@ jobs:
             --device model=sailfish,version=25,locale=ja,orientation=portrait \
             --device model=zeroflte,version=22,locale=ja,orientation=portrait \
             --timeout 90s
-
