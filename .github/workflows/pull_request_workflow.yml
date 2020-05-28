@@ -6,8 +6,7 @@ on:
     types: [trigger-pull-req]
 
 jobs:
-  firebase_test_lab:
-    needs: deploygate
+  firebase:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
