@@ -18,10 +18,10 @@ jobs:
           java-version: 1.8
 
       - name: Build with Gradle
-          env:
-            SLACK_COMMON_WEBHOOK_URI: ${{secrets.SLACK_COMMON_WEBHOOK_URI}}
-            SLACK_WEBHOOK_DEV_CHANNEL: ${{secrets.SLACK_WEBHOOK_DEV_CHANNEL}}
-          run: ./gradlew assembleDebug
+        env:
+          SLACK_COMMON_WEBHOOK_URI: ${{secrets.SLACK_COMMON_WEBHOOK_URI}}
+          SLACK_WEBHOOK_DEV_CHANNEL: ${{secrets.SLACK_WEBHOOK_DEV_CHANNEL}}
+        run: ./gradlew assembleDebug
 
       - name: Login to Google Cloud
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
